@@ -1,0 +1,30 @@
+{
+  "name": "serverless-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docker": "docker-compose up --force-recreate",
+    "dev": "npm install; serverless offline start --stage local"
+  },
+  "keywords": [
+    "api",
+    "serverless",
+    "lambda",
+    "AWS"
+  ],
+  "author": "Matheus Fidelis",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "serverless-pseudo-parameters": "^1.6.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.596.0",
+    "serverless-dynamodb-local": "0.2.38",
+    "serverless-offline": "^4.10.6",
+    "serverless-offline-scheduler": "^0.3.8",
+    "serverless-plugin-split-stacks": "^1.9.2"
+  }
+}
