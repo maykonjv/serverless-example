@@ -1,5 +1,6 @@
 ENV: local
-MESSAGE: 'arrazo viado'
-DYNAMO_TABLE_BOOKS: ${self:custom.dynamo-books} # Reference to Custom Env
+DYNAMO_TABLE: 'books'
+BUCKET_NAME: 'books_bucket'
+API_NAME: 'book_api'
 SQS_QUEUE_URL: '${self:custom.sqs-logs}'
 REGION: 'localhost'

@@ -3,7 +3,7 @@
 // const dynamo = require('../../../util/dynamo');
 // const sqs = require('../../../util/sqs');
 
-// const DYNAMO_TABLE_BOOKS = process.env.DYNAMO_TABLE_BOOKS || 'books';
+// const DYNAMO_TABLE = process.env.DYNAMO_TABLE || 'books';
 // const SQS_QUEUE_URL = process.env.SQS_QUEUE_URL || 'book';
 
 // let lastIntervalID;
@@ -64,5 +64,5 @@
 //         ":flag": 1
 //     };
 
-//     return dynamo.update(key, expression, values, DYNAMO_TABLE_BOOKS);
+//     return dynamo.update(key, expression, values, DYNAMO_TABLE);
 // }

@@ -12,7 +12,7 @@ This boilerplate contains following plugins for local development:
 
 
 ###Structure
-
+```
 configs/dev.yml
 configs/local.yml
 configs/prod.yml
@@ -31,6 +31,7 @@ src/util/response.js
 src/util/sqs.js
 src/util/uuid.js
 src/worker/books/handler.js
+```
 
 ## Manage AWS Cloudformation with Serverless
 
@@ -168,6 +169,7 @@ curl -X POST \
 ```bash
 serverless deploy -v --stage dev
 ```
+or
 ```bash
 serverless deploy -v --stage prod
 ```

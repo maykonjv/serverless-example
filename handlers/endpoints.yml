@@ -1,0 +1,22 @@
+  # Book API Endpoints
+
+  book:
+    handler: src/endpoints/books.handler
+    memorySize: 128
+    timeout: 30
+    events:
+      - http:
+          path: v1/books
+          method: post
+      - http:
+          path: v1/books
+          method: get
+      - http:
+          path: v1/books/{hashkey}
+          method: get
+      - http:
+          path: v1/books/{hashkey}
+          method: put
+      - http:
+          path: v1/books/{hashkey}
+          method: delete
