@@ -147,6 +147,10 @@ This boilerplate uses `serverless-local` plugin and some containers and plugins 
 ```bash
 docker-compose up
 ```
+or (background)
+```bash
+docker-compose up -d
+```
 The applications will start on `http://localhost:3000`
 
 **List books**
@@ -166,12 +170,21 @@ curl -X POST \
 
 ### Deploy full services
 
+#### run command into container ####
 ```bash
-serverless deploy -v --stage dev
+docker exec -it <container_id_or_name> echo "I'm inside the container!"
 ```
-or
+ex. login serverless -> aws (credential in .env)
 ```bash
-serverless deploy -v --stage prod
+docker exec -it serverless-example_serverless_1 npm run login
+```
+deploy dev
+```bash
+docker exec -it serverless-example_serverless_1 npm run dev
+```
+deploy prod
+```bash
+docker exec -it serverless-example_serverless_1 npm run prod
 ```
 
 [![asciicast](https://asciinema.org/a/4mzSihwWksZvjx7KO6mUy3EmO.png)](https://asciinema.org/a/4mzSihwWksZvjx7KO6mUy3EmO)
