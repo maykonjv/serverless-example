@@ -170,11 +170,12 @@ curl -X POST \
 
 ### Deploy full services
 
-#### run command into container ####
+run command into container
 ```bash
 docker exec -it <container_id_or_name> echo "I'm inside the container!"
 ```
-ex. login serverless -> aws (credential in .env)
+
+login serverless -> aws (credential in .env)
 ```bash
 docker exec -it serverless-example_serverless_1 npm run login
 ```
@@ -199,7 +200,11 @@ serverless deploy function -f books-consumer
 ### Clean All
 
 ```bash
-serverless remove
+docker exec -it serverless-example_serverless_1 npm run remove-dev
+```
+or
+```bash
+docker exec -it serverless-example_serverless_1 npm run remove-prod
 ```
 
 ## Testing

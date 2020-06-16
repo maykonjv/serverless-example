@@ -1,6 +1,7 @@
 ENV: local
 DYNAMO_TABLE: 'books'
-BUCKET_NAME: 'books_bucket'
+BUCKET_NAME: 'books-bucket'
 API_NAME: 'book_api'
+LAMBDA_NAME: 'book_lambda'
 SQS_QUEUE_URL: '${self:custom.sqs-logs}'
 REGION: 'localhost'

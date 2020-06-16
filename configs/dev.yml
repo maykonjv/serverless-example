@@ -1,6 +1,7 @@
 ENV: dev
 DYNAMO_TABLE: 'books'
-BUCKET_NAME: 'books_bucket'
+BUCKET_NAME: 'books-bucket-dev'
 API_NAME: 'book_api'
+LAMBDA_NAME: 'book_lambda_dev'
 SQS_QUEUE_URL: 'https://sqs.${self:provider.region}.amazonaws.com/#{AWS::AccountId}/${self:custom.sqs-logs}'
 REGION: 'us-east-1'

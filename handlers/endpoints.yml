@@ -2,6 +2,7 @@
 
   book:
     handler: src/endpoints/books.handler
+    name: ${self:custom.lambda-name}
     memorySize: 128
     timeout: 30
     events:

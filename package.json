@@ -1,11 +1,16 @@
 {
   "name": "serverless-example",
   "version": "1.0.0",
-  "description": "",
+  "description": "Projeto modelo para criação de APIs usando AWS API Gateway/Lambda/DynamoDB orquestrado pelo Serverless-Framework",
   "main": "index.js",
   "scripts": {
     "docker": "docker-compose up --force-recreate",
-    "dev": "npm install; serverless offline start --stage local"
+    "login": "serverless config credentials -o --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}",
+    "local": "npm install; serverless offline start --stage local",
+    "dev": "serverless deploy -v --stage dev",
+    "prod": "serverless deploy -v",
+    "remove-dev": "serverless remove -v -s dev",
+    "remove-prod": "serverless remove -v -s prod"
   },
   "keywords": [
     "api",
@@ -13,7 +18,7 @@
     "lambda",
     "AWS"
   ],
-  "author": "Matheus Fidelis",
+  "author": "Maykon Vaz",
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.7.2",
@@ -25,6 +30,7 @@
     "serverless-dynamodb-local": "0.2.38",
     "serverless-offline": "^4.10.6",
     "serverless-offline-scheduler": "^0.3.8",
-    "serverless-plugin-split-stacks": "^1.9.2"
+    "serverless-plugin-split-stacks": "^1.9.2",
+    "serverless-aws-documentation": "1.1.0"
   }
 }

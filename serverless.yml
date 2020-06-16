@@ -1,9 +1,9 @@
-service: serverless-boilerplate
+service: serverless-example
 
 provider:
   name: aws
   runtime: nodejs12.x
-  stage: ${opt:stage, 'local'}
+  stage: ${opt:stage, 'prod'}
   region: ${self:custom.extra.REGION}
   apiName: ${self:custom.extra.API_NAME}
   timeout: 300 #Default Lambda timeout
@@ -16,6 +16,11 @@ provider:
       - .git/**
       - .vscode/**
       - .test/**
+      - deploy-policy.json
+      - docker-compose.yml
+      - Dockerfile
+      - package-lock.json
+      - README.md
   iamRoleStatements: # Permissions for all of your functions can be set here
   - Effect: Allow
     Action: # Gives permission to DynamoDB tables in a specific region
@@ -33,7 +38,7 @@ provider:
       - lambda:InvokeAsync
     Resource: "*"
   environment: #Global Environment variables
-    ${file(./configs/${opt:stage, 'local'}.yml)}
+    ${file(./configs/${opt:stage, 'prod'}.yml)}
 
   # - Effect: Allow
   #   Action: # Gives permission to SQS
@@ -51,7 +56,8 @@ custom:
   sns-logs: ${self:custom.prefix}-trigger-logs
   sqs-logs: ${self:custom.prefix}-messages-logs
   bucketName: ${self:custom.extra.BUCKET_NAME}
-  extra: ${file(./configs/${opt:stage, 'local'}.yml)}
+  extra: ${file(./configs/${opt:stage, 'prod'}.yml)}
+  lambda-name: ${self:custom.extra.LAMBDA_NAME}
 
   serverless-offline:
     host: '0.0.0.0'
@@ -67,7 +73,7 @@ custom:
   dynamodb:
     stages:
       - local
-      - test
+      - prod
       - dev
     start:
       host: "dynamo"
@@ -83,6 +89,7 @@ plugins:
   - serverless-offline-scheduler
   # - serverless-offline-sqs-esmq
   - serverless-offline
+  - serverless-aws-documentation
 
 functions: ${file(serverless-dynamic.js)}
 
@@ -104,9 +111,7 @@ resources:  # CloudFormation template syntax
         KeySchema:
           - AttributeName: hashkey
             KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 2
-          WriteCapacityUnits: 1
+        BillingMode: PAY_PER_REQUEST
 
     # SQS Queue to Update DynamoDB
     # BooksQueueExample:
