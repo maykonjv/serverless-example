@@ -1,4 +1,4 @@
-## BASEADO em [serverless-architecture-boilerplate by msfidelis](https://github.com/msfidelis/serverless-architecture-boilerplate)
+## Ref [msfidelis](https://github.com/msfidelis/serverless-architecture-boilerplate)
 
 ### Dev Plugins
 
