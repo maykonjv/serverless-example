@@ -1,4 +1,105 @@
-## BASEADO em [serverless-architecture-boilerplate by msfidelis](https://github.com/msfidelis/serverless-architecture-boilerplate)
+## Ref [msfidelis](https://github.com/msfidelis/serverless-architecture-boilerplate)
+
+## Development environment
+
+This boilerplate uses `serverless-local` plugin and some containers and plugins to emulate the AWS Resources
+
+```bash
+docker-compose up
+```
+
+The applications will start on `http://localhost:3000`
+
+**List books**
+```bash
+curl -X GET \
+    http://localhost:3000/v1/books
+```
+**Create book**
+```bash
+curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"title": "American Gods", "author": "Neil Gaiman", "price": 10.00  }' \
+    http://localhost:3000/v1/books -i
+```
+
+## Production environment
+
+### Deploy full services
+
+run command into container
+```bash
+docker exec -it <container_id_or_name> echo "I'm inside the container!"
+```
+
+login serverless -> aws (credential in .env)
+```bash
+docker exec -it serverless-example_serverless_1 npm run login
+```
+deploy dev
+```bash
+docker exec -it serverless-example_serverless_1 npm run dev
+```
+deploy prod
+```bash
+docker exec -it serverless-example_serverless_1 npm run prod
+```
+
+### Deploy a function
+
+```bash
+serverless deploy function -f books-consumer
+```
+
+### Clean All
+
+```bash
+docker exec -it serverless-example_serverless_1 npm run remove-dev
+```
+or
+```bash
+docker exec -it serverless-example_serverless_1 npm run remove-prod
+```
+
+## Testing
+
+**Create Book**
+
+```bash
+curl -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"title": "American Gods", "author": "Neil Gaiman", "price": 10.00  }' \
+    https://yur25zhqo0.execute-api.us-east-1.amazonaws.com/production/services/books -i
+```
+
+**List Books**
+```bash
+curl -X GET \
+    https://yur25zhqo0.execute-api.us-east-1.amazonaws.com/production/services/books
+```
+
+
+**Detail Book**
+
+```bash
+curl -X GET \
+    https://yur25zhqo0.execute-api.us-east-1.amazonaws.com/production/services/books/456c9e8f-6c50-d656-dc69-dc828c42af65
+```
+
+**Delete Book**
+
+```bash
+curl -X DELETE \
+    https://yur25zhqo0.execute-api.us-east-1.amazonaws.com/production/services/books/456c9e8f-6c50-d656-dc69-dc828c42af65 -i
+```
+
+**Update Book**
+
+```bash
+curl -X PUT \
+    -d '{"title": "updated modafoca"}' -H "Content-type: application/json" \
+    https://eusrv4mci5.execute-api.us-east-1.amazonaws.com/production/services/books/bbafdb0c-ee6e-fca0-f224-ed534f5b7766 -i
+```
 
 ### Dev Plugins
 
