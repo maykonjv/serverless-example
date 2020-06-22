@@ -36,14 +36,23 @@ login serverless -> aws (credential in .env)
 ```bash
 docker exec -it serverless-example_serverless_1 npm run login
 ```
-deploy dev
+first deploy dev
 ```bash
-docker exec -it serverless-example_serverless_1 npm run dev
+docker exec -it serverless-example_serverless_1 npm run deploy-dev
 ```
-deploy prod
+first deploy prod
 ```bash
-docker exec -it serverless-example_serverless_1 npm run prod
+docker exec -it serverless-example_serverless_1 npm run deploy-prod
 ```
+udpate deploy dev
+```bash
+docker exec -it serverless-example_serverless_1 npm run update-dev
+```
+update deploy prod
+```bash
+docker exec -it serverless-example_serverless_1 npm run update-prod
+```
+
 
 ### Deploy a function
 
@@ -112,28 +121,6 @@ This boilerplate contains following plugins for local development:
 * [serverless-plugin-split-stacks](https://github.com/dougmoscrop/serverless-plugin-split-stacks) - Split Cloudformation Templates
 
 
-###Structure
-```
-configs/dev.yml
-configs/local.yml
-configs/prod.yml
-handlers/endpoints.yml
-handlers/workers.yml
-src/endpoints/books.js
-src/endpoints/book/create.js
-src/endpoints/book/delete.js
-src/endpoints/book/read.js
-src/endpoints/book/update.js
-src/util/dynamo.js
-SRC/util/kinesis.js
-SRC/util/lambda.js
-SRC/util/parsers.js
-src/util/response.js
-src/util/sqs.js
-src/util/uuid.js
-src/worker/books/handler.js
-```
-
 ## Manage AWS Cloudformation with Serverless
 
 ### IAM Roles
@@ -165,31 +152,29 @@ src/worker/books/handler.js
 
 ```yml
 # Infrastrucure - Cloud Formation
-resources:  # CloudFormation template syntax
+additionalStacks:  # CloudFormation template syntax
+  permanent:
+    Resources:
+      #DynamoDB Books Table
+      BooksCatalog:
+        Type: AWS::DynamoDB::Table # CloudFormation Pseudo Parameter Example
+        Properties:
+          TableName: ${self:custom.dynamo-books}
+          AttributeDefinitions:
+            - AttributeName: hashkey
+              AttributeType: S
+          KeySchema:
+            - AttributeName: hashkey
+              KeyType: HASH
+          BillingMode: PAY_PER_REQUEST
 
-  Resources:
-    #DynamoDB Books Table
-    BooksCatalog:
-      Type: AWS::DynamoDB::Table # CloudFormation Pseudo Parameter Example
-      Properties:
-        TableName: ${self:custom.dynamo-books}
-        AttributeDefinitions:
-          - AttributeName: hashkey
-            AttributeType: S
-        KeySchema:
-          - AttributeName: hashkey
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 2
-          WriteCapacityUnits: 1
-
-    # SQS Queue to Update DynamoDB
-    BooksQueueExample:
-      Type: AWS::SQS::Queue
-      Properties:
-        QueueName: ${self:custom.sqs-logs}
-        MessageRetentionPeriod: 1209600
-        VisibilityTimeout: 60
+      # SQS Queue to Update DynamoDB
+      BooksQueueExample:
+        Type: AWS::SQS::Queue
+        Properties:
+          QueueName: ${self:custom.sqs-logs}
+          MessageRetentionPeriod: 1209600
+          VisibilityTimeout: 60
 ```
 
 ## Functions
@@ -239,119 +224,4 @@ functions:
         rate: cron(* * * * * *) # Cron Syntax
         enabled: true # Trigger Enabled
 
-```
-
-## Development environment
-
-This boilerplate uses `serverless-local` plugin and some containers and plugins to emulate the AWS Resources
-
-```bash
-docker-compose up
-```
-or (background)
-```bash
-docker-compose up -d
-```
-The applications will start on `http://localhost:3000`
-
-**List books**
-```bash
-curl -X GET \
-    http://localhost:3000/v1/books
-```
-**Create book**
-```bash
-curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{"title": "American Gods", "author": "Neil Gaiman", "price": 10.00  }' \
-    http://localhost:3000/v1/books -i
-```
-
-## Production environment
-
-### Deploy full services
-
-run command into container
-```bash
-docker exec -it <container_id_or_name> echo "I'm inside the container!"
-```
-
-login serverless -> aws (credential in .env)
-```bash
-docker exec -it serverless-example_serverless_1 npm run login
-```
-first deploy dev
-```bash
-docker exec -it serverless-example_serverless_1 npm run deploy-dev
-```
-first deploy prod
-```bash
-docker exec -it serverless-example_serverless_1 npm run deploy-prod
-```
-udpate deploy dev
-```bash
-docker exec -it serverless-example_serverless_1 npm run update-dev
-```
-update deploy prod
-```bash
-docker exec -it serverless-example_serverless_1 npm run update-prod
-```
-
-[![asciicast](https://asciinema.org/a/4mzSihwWksZvjx7KO6mUy3EmO.png)](https://asciinema.org/a/4mzSihwWksZvjx7KO6mUy3EmO)
-
-
-### Deploy a function
-
-```bash
-serverless deploy function -f books-consumer
-```
-
-### Clean All
-
-```bash
-docker exec -it serverless-example_serverless_1 npm run remove-dev
-```
-or
-```bash
-docker exec -it serverless-example_serverless_1 npm run remove-prod
-```
-
-## Testing
-
-**Create Book**
-
-```bash
-curl -X POST \
-    -H "Content-Type: application/json" \
-    -d '{"title": "American Gods", "author": "Neil Gaiman", "price": 10.00  }' \
-    https://yur25zhqo0.execute-api.us-east-1.amazonaws.com/production/services/books -i
-```
-
-**List Books**
-```bash
-curl -X GET \
-    https://yur25zhqo0.execute-api.us-east-1.amazonaws.com/production/services/books
-```
-
-
-**Detail Book**
-
-```bash
-curl -X GET \
-    https://yur25zhqo0.execute-api.us-east-1.amazonaws.com/production/services/books/456c9e8f-6c50-d656-dc69-dc828c42af65
-```
-
-**Delete Book**
-
-```bash
-curl -X DELETE \
-    https://yur25zhqo0.execute-api.us-east-1.amazonaws.com/production/services/books/456c9e8f-6c50-d656-dc69-dc828c42af65 -i
-```
-
-**Update Book**
-
-```bash
-curl -X PUT \
-    -d '{"title": "updated modafoca"}' -H "Content-type: application/json" \
-    https://eusrv4mci5.execute-api.us-east-1.amazonaws.com/production/services/books/bbafdb0c-ee6e-fca0-f224-ed534f5b7766 -i
 ```
