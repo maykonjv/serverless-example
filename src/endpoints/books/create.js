@@ -7,7 +7,7 @@ const response = require('../../util/response');
 const DYNAMO_TABLE = process.env.DYNAMO_TABLE || 'books';
 
 module.exports.create = async (data) => {
-	console.log('create::book');
+	console.log('create::' + DYNAMO_TABLE);
 	const hashkey = uuid();
 
 	const book = {

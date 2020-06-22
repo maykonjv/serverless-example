@@ -6,7 +6,7 @@ const response = require('../../util/response');
 const DYNAMO_TABLE = process.env.DYNAMO_TABLE || 'books';
 
 module.exports.delete = async (params) => {
-	console.log('delete::books', params);
+	console.log('delete::' + DYNAMO_TABLE);
 	const key = { hashkey: params.hashkey };
 	try {
 		const success = await dynamo.removeRow(key, DYNAMO_TABLE);

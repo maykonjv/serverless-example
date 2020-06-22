@@ -17,7 +17,7 @@ const DYNAMO_TABLE = process.env.DYNAMO_TABLE || 'books';
  * @param {*} callback
  */
 module.exports.update = async (param, data) => {
-	console.log('update::books', param);
+	console.log('update::' + DYNAMO_TABLE);
 	const key = {
 		hashkey: param.hashkey
 	};

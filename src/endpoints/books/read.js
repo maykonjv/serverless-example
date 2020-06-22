@@ -7,7 +7,7 @@ const DYNAMO_TABLE = process.env.DYNAMO_TABLE || 'books';
 
 module.exports.list = async (params) => {
 	try {
-		console.log('list::books', params);
+		console.log('list::' + DYNAMO_TABLE);
 		const result = await dynamo.scan({}, null, DYNAMO_TABLE);
 		return response._200(result.Items);
 	} catch (err) {
@@ -16,7 +16,7 @@ module.exports.list = async (params) => {
 };
 
 module.exports.detail = async (_params) => {
-  console.log('detail::books', _params);
+	console.log('detail::' + DYNAMO_TABLE);
 	const params = {
 		FilterExpression: '#hashkey = :hashkey',
 		ExpressionAttributeNames: {

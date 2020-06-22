@@ -2,6 +2,8 @@ ENV: dev
 DYNAMO_TABLE: 'books'
 BUCKET_NAME: 'books-bucket-dev'
 API_NAME: 'book_api'
+API_DESCRIPTION: 'API Modelo by Serverless Framework'
 LAMBDA_NAME: 'book_lambda_dev'
+LAMBDA_DESCRIPTION: 'Lambda Modelo by Serverless Framework'
 SQS_QUEUE_URL: 'https://sqs.${self:provider.region}.amazonaws.com/#{AWS::AccountId}/${self:custom.sqs-logs}'
 REGION: 'us-east-1'

@@ -179,13 +179,21 @@ login serverless -> aws (credential in .env)
 ```bash
 docker exec -it serverless-example_serverless_1 npm run login
 ```
-deploy dev
+first deploy dev
 ```bash
-docker exec -it serverless-example_serverless_1 npm run dev
+docker exec -it serverless-example_serverless_1 npm run deploy-dev
 ```
-deploy prod
+first deploy prod
 ```bash
-docker exec -it serverless-example_serverless_1 npm run prod
+docker exec -it serverless-example_serverless_1 npm run deploy-prod
+```
+udpate deploy dev
+```bash
+docker exec -it serverless-example_serverless_1 npm run update-dev
+```
+update deploy prod
+```bash
+docker exec -it serverless-example_serverless_1 npm run update-prod
 ```
 
 [![asciicast](https://asciinema.org/a/4mzSihwWksZvjx7KO6mUy3EmO.png)](https://asciinema.org/a/4mzSihwWksZvjx7KO6mUy3EmO)

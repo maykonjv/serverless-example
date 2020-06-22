@@ -58,6 +58,7 @@ custom:
   bucketName: ${self:custom.extra.BUCKET_NAME}
   extra: ${file(./configs/${opt:stage, 'prod'}.yml)}
   lambda-name: ${self:custom.extra.LAMBDA_NAME}
+  lambda-description: ${self:custom.extra.LAMBDA_DESCRIPTION}
 
   serverless-offline:
     host: '0.0.0.0'
@@ -81,6 +82,34 @@ custom:
       inMemory: false
       migrate: true
       noStart: true
+  # add resources
+  additionalStacks:
+    permanent:
+      Resources:
+        DemoBucketUpload:
+          Type: AWS::S3::Bucket
+          Properties:
+              BucketName: ${self:custom.bucketName}
+        #DynamoDB Books Table
+        DynamoDBCatalog:
+          Type: AWS::DynamoDB::Table
+          Properties:
+            TableName: ${self:custom.extra.DYNAMO_TABLE}
+            AttributeDefinitions:
+              - AttributeName: hashkey
+                AttributeType: S
+            KeySchema:
+              - AttributeName: hashkey
+                KeyType: HASH
+            BillingMode: PAY_PER_REQUEST
+
+        # SQS Queue to Update DynamoDB
+        # BooksQueueExample:
+        #   Type: AWS::SQS::Queue
+        #   Properties:
+        #     QueueName: ${self:custom.sqs-logs}
+        #     MessageRetentionPeriod: 1209600
+        #     VisibilityTimeout: 60
 
 
 plugins:
@@ -90,33 +119,6 @@ plugins:
   # - serverless-offline-sqs-esmq
   - serverless-offline
   - serverless-aws-documentation
+  - serverless-plugin-additional-stacks
 
 functions: ${file(serverless-dynamic.js)}
-
-# Infrastrucure - Cloud Formation
-resources:  # CloudFormation template syntax
-  Resources:
-    DemoBucketUpload:
-      Type: AWS::S3::Bucket
-      Properties:
-          BucketName: ${self:custom.bucketName}
-    #DynamoDB Books Table
-    DynamoDBCatalog:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: ${self:custom.extra.DYNAMO_TABLE}
-        AttributeDefinitions:
-          - AttributeName: hashkey
-            AttributeType: S
-        KeySchema:
-          - AttributeName: hashkey
-            KeyType: HASH
-        BillingMode: PAY_PER_REQUEST
-
-    # SQS Queue to Update DynamoDB
-    # BooksQueueExample:
-    #   Type: AWS::SQS::Queue
-    #   Properties:
-    #     QueueName: ${self:custom.sqs-logs}
-    #     MessageRetentionPeriod: 1209600
-    #     VisibilityTimeout: 60
