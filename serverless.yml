@@ -110,7 +110,53 @@ custom:
         #     QueueName: ${self:custom.sqs-logs}
         #     MessageRetentionPeriod: 1209600
         #     VisibilityTimeout: 60
-
+  documentation:
+    # this is general info about the API
+    api:
+      info:
+        version: '2'
+        title: Example API
+        description: Some example API
+        termsOfService: https://www.google.com
+        contact:
+          name: The contact person
+          url: https://www.serverless.com/framework
+          email: some-fake@email.com
+        license:
+          name: The license
+          url: https://www.github.com
+      tags:
+        -
+          name: Tag1
+          description: The first tag
+        -
+          name: Tag2
+          description: That other tag that we all love
+    # Now we describe all the models that we use
+    models:
+      -
+        name: books
+        contentType: "application/json"
+        schema:
+          type: array
+          items:
+            type: string
+      -
+        name: ErrorResponse
+        contentType: "application/json"
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+            statusCode:
+              type: number
+  commonModelSchemaFragments:
+    # defining common fragments means you can reference them with a single line
+    MethodResponse400Json:
+      statusCode: '400'
+      responseModels:
+        "application/json": ErrorResponse
 
 plugins:
   - serverless-pseudo-parameters

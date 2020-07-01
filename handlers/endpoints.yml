@@ -10,9 +10,54 @@
       - http:
           path: v1/books
           method: post
+          # @todo add auth or API key
       - http:
           path: v1/books
           method: get
+          documentation:
+            summary: "Create something"
+            description: "Creates the thing you need"
+            tags:
+              - "Data Creation"
+              - "Some other tag"
+            requestBody:
+              description: "Request body description"
+            # requestHeaders:
+            #   -
+            #     name: "x-header"
+            #     description: "Header description"
+            #   -
+            #     name: "Authorization"
+            #     description: "Auth Header description"
+            # queryParams:
+            #   -
+            #     name: "sid"
+            #     description: "Session ID"
+            #   -
+            #     name: "theme"
+            #     description: "Theme for for the website"
+            # pathParams:
+            #   -
+            #     name: "id"
+            #     description: "ID of the thing you want to create"
+            # requestModels:
+            #   "application/json": "CreateRequest"
+            #   "application/xml": "CreateRequestXml"
+            methodResponses:
+              -
+                statusCode: "200"
+                responseBody:
+                  description: "Response body description"
+                # responseHeaders:
+                #   -
+                #     name: "x-superheader"
+                #     description: "this is a super header"
+                responseModels:
+                  "application/json": "books"
+              -
+                statusCode: "400"
+                responseModels:
+                  "application/json": "ErrorResponse"
       - http:
           path: v1/books/{hashkey}
           method: get
