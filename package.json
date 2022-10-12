@@ -30,7 +30,7 @@
   "devDependencies": {
     "aws-sdk": "^2.596.0",
     "serverless-dynamodb-local": "0.2.38",
-    "serverless-offline": "^4.10.6",
+    "serverless-offline": "^11.1.1",
     "serverless-offline-scheduler": "^0.3.8",
     "serverless-plugin-split-stacks": "^1.9.2",
     "serverless-plugin-additional-stacks": "^1.4.0",
